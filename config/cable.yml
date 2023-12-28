@@ -1,0 +1,11 @@
+development:
+  adapter: redis
+  url: redis://<%= ENV.fetch("REDIS_HOST") { "redis" } %>:<%= ENV.fetch("REDIS_PORT") { "6379" } %>/1  
+
+test:
+  adapter: test
+
+production:
+  adapter: redis
+  url: redis://<%= ENV.fetch("REDIS_HOST") { "redis" } %>:<%= ENV.fetch("REDIS_PORT") { "6379" } %>/1
+  channel_prefix: currency_production
