@@ -1,9 +1,13 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+date_range = (1.month.ago.to_date..Date.today)
+
+date_range.each do |date|
+  results = ApiServices::CbrWraper.get_rates_for_date date
+
+  results.each do |hash|
+    new_rate = CurrencyRate.new(hash.merge(date:))
+    new_rate.save!
+
+  rescue ActiveRecord::RecordInvalid
+    next
+  end
+end
