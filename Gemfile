@@ -74,3 +74,5 @@ group :test do
   gem "selenium-webdriver"
   gem 'pry', '~> 0.14.2'
 end
+
+gem 'dotenv-rails', groups: [:development, :test]

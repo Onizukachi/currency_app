@@ -1,7 +1,5 @@
 class CurrencyRatesController < ApplicationController
   def index
-    RatesUpdateJob.perform_async
-
     data = CurrencyRate.last_month
     @chart_data = prepare_data_for_chart data
   end

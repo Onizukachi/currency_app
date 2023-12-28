@@ -2,10 +2,10 @@ url = "redis://#{ENV.fetch("REDIS_HOST") { "redis" }}:#{ENV.fetch("REDIS_PORT") 
 
 if url
   Sidekiq.configure_server do |config|
-    config.redis = { url: "redis://localhost:7963/1" }
+    config.redis = { url: }
   end
   Sidekiq.configure_client do |config|
-    config.redis = { url: "redis://localhost:7963/1" }
+    config.redis = { url: }
   end
-  $redis = Redis.new(:url => "redis://localhost:7963/1" )
+  $redis = Redis.new(url:)
 end
