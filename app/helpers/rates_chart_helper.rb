@@ -1,0 +1,2 @@
+module RatesChartHelper
+end

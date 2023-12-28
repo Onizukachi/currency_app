@@ -4,7 +4,10 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.0-beta.2",
+    "@types/c3": "^0.7.4",
     "autoprefixer": "^10.4.16",
+    "c3": "^0.7.20",
+    "d3": "^7.8.5",
     "esbuild": "^0.19.10",
     "flowbite": "^2.2.1",
     "postcss": "^8.4.32",
