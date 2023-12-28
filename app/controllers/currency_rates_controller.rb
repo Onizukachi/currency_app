@@ -1,51 +1,35 @@
 class CurrencyRatesController < ApplicationController
-  include ActionView::Helpers::NumberHelper
-
   def index
-    @chart_data = data_for_chart
-    # shows = number_to_currency(rows.first.rate, precision: 2, unit: "₽", format: "%n %u")
+    RatesUpdateJob.perform_async
+
+    data = CurrencyRate.last_month
+    @chart_data = prepare_data_for_chart data
   end
 
-  def get_percent(a, b)
-    (((b - a)) / a * 100).to_f.round(1)
-  end
-
-
-  def rub
-
-  end
-
-  def usd
-
-  end
-
-  def eur
-
-  end
-
-  def cny
-
+  def last_four_weeks
+    data = CurrencyRate.last_four_weeks
+    @table_data = prepare_data_for_table data
   end
 
   private
 
-  def data_for_chart
-    rows = CurrencyRate.where(date: 4.weeks.ago.beginning_of_week.. 1.weeks.ago.end_of_week).order(:date)
-    filtered_rows = rows.select { |row| row.date.sunday? || row.date.monday? }
-
-    header = ['x', filtered_rows.map(&:date).uniq.sort].flatten
-    body = filtered_rows.group_by { |x| x.currency }
-                        .transform_values { |x| x.sort_by(&:date).map(&:rate) }
+  def prepare_data_for_chart(data)
+    header = ['x', data.map(&:date).uniq.sort].flatten
+    body = data.group_by { |x| x.currency }
+                        .transform_values { |x| x.sort_by(&:date).map { |el| el.rate.to_f.round(2)} }
                         .to_a.map(&:flatten)
 
     body.unshift(header).to_json
   end
 
-  def data_for_table
-    rows = CurrencyRate.where(date: 4.weeks.ago.beginning_of_week.. 1.weeks.ago.end_of_week).order(:date)
+  def prepare_data_for_table(data)
+    filtered_rows = data.select { |row| row.date.sunday? || row.date.monday? }
 
-    result = rows.to_a.group_by { |row| row.currency }
-                 .transform_values { |v|  v.each_slice(7).to_a
-                                           .map { |week_arr| [week_arr.first.rate, week_arr.last.rate, get_percent(week_arr.first.rate, week_arr.last.rate)] } }
+    filtered_rows.group_by { |row| row.currency }
+                 .transform_values { |v| v.sort_by(&:date).each_slice(2).map { |x| [x.last.rate, get_percent(x.first.rate, x.last.rate)] }}
+  end
+
+  def get_percent(a, b)
+    (((b - a)) / a * 100).to_f.round(1)
   end
 end

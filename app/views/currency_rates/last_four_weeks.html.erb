@@ -1,0 +1,48 @@
+<div class="flex justify-center mt-24">
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3">
+          Валюта
+        </th>
+        <th scope="col" class="px-6 py-3">
+          4 недели назад
+        </th>
+        <th scope="col" class="px-6 py-3">
+          3 недели назад
+        </th>
+        <th scope="col" class="px-6 py-3">
+          позапрошлая
+          неделя
+        </th>
+        <th scope="col" class="px-6 py-3">
+          прошлая
+          неделя
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @table_data.each do |currency, data| %>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <%= currency %>
+            </th>
+            <td class="px-6 py-4">
+              <%= number_to_currency(data[0][0], precision: 2, unit: "₽", format: "%n %u") %> (<%= data[0][1].negative? ? data[0][1] : "+#{data[1][1]}" %>%)
+            </td>
+            <td class="px-6 py-4">
+              <%= number_to_currency(data[1][0], precision: 2, unit: "₽", format: "%n %u") %> (<%= data[1][1].negative? ? data[1][1] : "+#{data[1][1]}" %>%)
+            </td>
+            <td class="px-6 py-4">
+              <%= number_to_currency(data[2][0], precision: 2, unit: "₽", format: "%n %u") %> (<%= data[2][1].negative? ? data[2][1] : "+#{data[2][1]}" %>%)
+            </td>
+            <td class="px-6 py-4">
+              <%= number_to_currency(data[3][0], precision: 2, unit: "₽", format: "%n %u") %> (<%= data[3][1].negative? ? data[3][1] : "+#{data[3][1]}" %>%)
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import c3 from 'c3'
 
-
 // Connects to data-controller="rates-chart"
 export default class extends Controller {
   static values = {
@@ -9,16 +8,14 @@ export default class extends Controller {
   }
 
   connect() {
-    this.initializeChart();
-    console.log(this.dataValue)
+    this.showChart();
   }
 
-  initializeChart() {
+  showChart() {
     const chart = c3.generate({
-      bindto: "#chart",
+      bindto: "#chart-rates",
       data: {
         x: 'x',
-//        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
         columns: this.dataValue
       },
       axis: {

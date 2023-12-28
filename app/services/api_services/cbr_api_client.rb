@@ -7,7 +7,7 @@ module ApiServices
   class CbrApiClient
     BASE_URL = "http://www.cbr.ru/scripts/XML_daily.asp"
 
-    def get(date:) # returns data for the current day without the parameter
+    def get(date=nil) # returns data for the current day without the parameter
       query_data = date && "date_req=#{CGI.escape(format_date(date))}"
       response = RestClient.get("#{BASE_URL}?#{query_data}")
 

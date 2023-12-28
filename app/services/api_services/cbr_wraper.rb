@@ -12,8 +12,8 @@ module ApiServices
       @cbr_client = CbrApiClient.new
     end
 
-    def get_rates_for_date(date)
-      xml_data = @cbr_client.get(date:)
+    def get_rates_for_date(date=nil)
+      xml_data = @cbr_client.get(date)
 
       return if xml_data.blank?
 
